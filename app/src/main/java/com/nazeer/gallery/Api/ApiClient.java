@@ -20,7 +20,7 @@ public class ApiClient {
     private Services services;
 
     /*
-     * Api client is a layer between the application code and the network library dependancy
+     * Api client is a layer between the application code and the network library dependency
      */
     public ApiClient(){
 

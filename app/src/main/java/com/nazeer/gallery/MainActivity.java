@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.nazeer.gallery.Api.ApiCallback;
 import com.nazeer.gallery.Api.ApiClient;
 import com.nazeer.gallery.Api.models.Flower;
+import com.nazeer.gallery.Util.App;
 
 import java.util.List;
 
@@ -15,12 +16,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ApiClient client=new ApiClient();
-        client.getFlowers(new ApiCallback<List<Flower>>(){
-            @Override
-            public void onSuccess(List<Flower> response) {
-                response.size();
-            }
-        });
+        initViews();
+        fetchData();
+    }
+
+    private void initViews() {
+
+    }
+
+    private void fetchData() {
+
     }
 }
