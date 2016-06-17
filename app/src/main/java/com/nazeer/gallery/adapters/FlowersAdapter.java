@@ -1,9 +1,11 @@
 package com.nazeer.gallery.adapters;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
 
     private final Context context;
     private final List<Flower> items;
+    public AdapterView.OnItemClickListener itemClickListener;
 
     public FlowersAdapter(Context context, List<Flower>items){
         this.context=context;
@@ -28,26 +31,49 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
     @Override
     public MViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view=View.inflate(context,R.layout.gallery_item,null);
-
-        return new MViewHolder(view);
+        final MViewHolder holder = new MViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(itemClickListener!=null){
+                    itemClickListener.onItemClick(null,view,holder.position,0);
+                }
+            }
+        });
+        return holder ;
     }
 
     @Override
     public void onBindViewHolder(FlowersAdapter.MViewHolder holder, int position) {
-        App.imageLoader.displayImage(items.get(position).getPhoto(),holder.flowerIv);
+        App.imageLoader.displayImage(getItem(position).getPhoto(),holder.flowerIv);
+        holder.position=position;
     }
+
 
     @Override
     public int getItemCount() {
         return items.size();
     }
+
+
+    public Flower getItem(int position){
+        return items.get(position);
+    }
+
     static class MViewHolder extends RecyclerView.ViewHolder{
         ImageView flowerIv;
-
+        int position;
+        View view;
         public MViewHolder(View itemView) {
             super(itemView);
             flowerIv= (ImageView) itemView.findViewById(R.id.imageView);
+            view=itemView;
         }
     }
+
+    public void setOnItemClickListner(AdapterView.OnItemClickListener listener){
+        this.itemClickListener=listener;
+    }
+
 
 }
