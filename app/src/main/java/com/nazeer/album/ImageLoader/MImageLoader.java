@@ -16,7 +16,6 @@ public class MImageLoader {
 
     public static ImageLoader imageLoader;
     private final DisplayImageOptions optionsRoundCornered;
-    private final DisplayImageOptions options;
     private final Context context;
 
     public MImageLoader(Context context){
@@ -34,15 +33,6 @@ public class MImageLoader {
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
-        options = new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .showImageOnLoading(R.drawable.loading_img)
-                .showImageOnFail(R.drawable.loading_img)
-                .showImageForEmptyUri(R.drawable.loading_img)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .build();
-
     }
 
     public void displayRoundCornerImage(String url, final ImageView imageView){

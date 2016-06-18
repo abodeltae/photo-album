@@ -116,11 +116,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         flipAnimate(true);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        recyclerView.invalidate();
-    }
+
 
      void flipAnimate(final boolean showDetail){
          int start,end;

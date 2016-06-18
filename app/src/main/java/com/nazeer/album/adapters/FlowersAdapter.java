@@ -36,7 +36,7 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
                 if(itemClickListener!=null){
                     //use this approach instead of saving the item position directly to support deleting items with notifyItemRemoved without mixing indexes
                     int index=items.indexOf(holder.flower);
-                    // check to avoid multible clicks during animationg delete
+                    // check to avoid multible clicks during animating delete
                     if(index!=-1)
                     itemClickListener.onClick(index);
 
