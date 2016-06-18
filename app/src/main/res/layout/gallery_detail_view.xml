@@ -16,10 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:id="@+id/galleryDetailIv"
-            android:scaleType="matrix"
+            android:scaleType="fitXY"
             android:padding="4dp"
             android:layout_margin="10dp"
-
             />
         <RelativeLayout
             android:layout_width="match_parent"
