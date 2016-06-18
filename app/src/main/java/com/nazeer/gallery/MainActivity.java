@@ -2,10 +2,17 @@ package com.nazeer.gallery;
 
 import android.animation.ValueAnimator;
 import android.content.res.Configuration;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -17,11 +24,13 @@ import com.nazeer.gallery.Api.models.Flower;
 import com.nazeer.gallery.Util.App;
 import com.nazeer.gallery.Util.Utils;
 import com.nazeer.gallery.adapters.FlowersAdapter;
+import com.nazeer.gallery.callbacks.OnItemClick;
 import com.nazeer.gallery.customViews.MGridLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private RecyclerView recyclerView;
     private List<Flower>flowerList;
@@ -29,13 +38,23 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout galleryDetailContainer;
     private ImageView galleryDetailIv;
     private RelativeLayout mainContainer;
+    private ArrayList<Flower> viewedList;
+    private FlowersAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+        setupToolbar();
         fetchData();
+
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
 
     }
 
@@ -53,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<Flower> response) {
                 flowerList=response;
-                fillRecyclerView(flowerList);
+                viewedList=new ArrayList<Flower>();
+                viewedList.addAll(flowerList);
+                fillRecyclerView(viewedList);
             }
 
             @Override
@@ -63,13 +84,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void fillRecyclerView(List<Flower> list) {
-        final FlowersAdapter adapter=new FlowersAdapter(this,list);
-        adapter.setOnItemClickListner(new AdapterView.OnItemClickListener() {
+    private void fillRecyclerView(final List<Flower> list) {
+         adapter=new FlowersAdapter(this,list);
+        adapter.setOnItemClickListner(new OnItemClick() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                App.imageLoader.displayImage(adapter.getItem(i).getPhoto(),galleryDetailIv);
-                flipAnimate(true);
+            public void onClick(int position) {
+                App.imageLoader.displayImage(adapter.getItem(position).getPhoto(),galleryDetailIv);
+               flipAnimate(true);
+
+
             }
         });
         layoutManager=new MGridLayoutManager(this, Utils.dpToPixel(this,100));
@@ -124,5 +147,62 @@ public class MainActivity extends AppCompatActivity {
         else{
             super.onBackPressed();
         }
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_main, menu);
+
+        final MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(this);
+
+        MenuItemCompat.setOnActionExpandListener(item,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        // Do something when collapsed
+
+                        return true; // Return true to collapse action view
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        // Do something when expanded
+                        return true; // Return true to expand action view
+                    }
+                });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if(galleryDetailContainer.getVisibility()==View.VISIBLE){
+            mainContainer.setRotationY(0);
+            galleryDetailContainer.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+        ArrayList<Integer>removeSequence=new ArrayList<>();
+        ArrayList<Flower>addList=new ArrayList<>();
+        FlowerSearchHelper.generateSearchAddAndDeleteList(flowerList,viewedList,addList,removeSequence,newText);
+        for(int x:removeSequence){
+
+            adapter.notifyItemRemoved(x);
+            viewedList.remove(x);
+
+        }
+        for(Flower f: addList){
+            viewedList.add(f);
+            adapter.notifyItemInserted(viewedList.size()-1);
+        }
+        return true;
     }
 }

@@ -24,8 +24,10 @@ public class MImageLoader {
     public static ImageLoader imageLoader;
     private final DisplayImageOptions optionsRoundCornered;
     private final DisplayImageOptions options;
+    private final Context context;
 
     public MImageLoader(Context context){
+        this.context=context;
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .build();
         imageLoader=ImageLoader.getInstance();
@@ -64,7 +66,8 @@ public class MImageLoader {
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                Bitmap scaled = Bitmap.createScaledBitmap(loadedImage, imageView.getWidth(), imageView.getHeight(),false);
+                int minWidth=dpToPixel(context,100);
+                Bitmap scaled = Bitmap.createScaledBitmap(loadedImage, Math.max(minWidth,imageView.getWidth()), Math.max(minWidth,imageView.getHeight()),false);
                 imageView.setImageBitmap(scaled);
             }
 
@@ -79,9 +82,9 @@ public class MImageLoader {
     public void displayRoundCornerImage(String url,ImageView imageView){
         imageLoader.displayImage(url,imageView,optionsRoundCornered);
     }
-    private float dpToPixel(Context context, int value) {
+    private int dpToPixel(Context context, int value) {
         float density = context.getResources().getDisplayMetrics().density;
-        return value * density;
+        return (int)(value * density);
     }
 
 

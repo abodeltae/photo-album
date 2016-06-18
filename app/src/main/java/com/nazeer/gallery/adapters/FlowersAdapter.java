@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.nazeer.gallery.Api.models.Flower;
 import com.nazeer.gallery.R;
 import com.nazeer.gallery.Util.App;
+import com.nazeer.gallery.callbacks.OnItemClick;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
 
     private final Context context;
     private final List<Flower> items;
-    public AdapterView.OnItemClickListener itemClickListener;
+    public OnItemClick itemClickListener;
 
     public FlowersAdapter(Context context, List<Flower>items){
         this.context=context;
@@ -36,7 +38,12 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
             @Override
             public void onClick(View view) {
                 if(itemClickListener!=null){
-                    itemClickListener.onItemClick(null,view,holder.position,0);
+                    //use this approach instead of saving the item position directly to support deleting items with notifyItemRemoved without mixing indexes
+                    int index=items.indexOf(holder.flower);
+                    // check to avoid multible clicks during animationg delete
+                    if(index!=-1)
+                    itemClickListener.onClick(index);
+
                 }
             }
         });
@@ -46,7 +53,7 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
     @Override
     public void onBindViewHolder(FlowersAdapter.MViewHolder holder, int position) {
         App.imageLoader.displayImage(getItem(position).getPhoto(),holder.flowerIv);
-        holder.position=position;
+        holder.flower=getItem(position);
     }
 
 
@@ -62,7 +69,7 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
 
     static class MViewHolder extends RecyclerView.ViewHolder{
         ImageView flowerIv;
-        int position;
+        Flower flower;
         View view;
         public MViewHolder(View itemView) {
             super(itemView);
@@ -71,7 +78,7 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
         }
     }
 
-    public void setOnItemClickListner(AdapterView.OnItemClickListener listener){
+    public void setOnItemClickListner(OnItemClick listener){
         this.itemClickListener=listener;
     }
 
