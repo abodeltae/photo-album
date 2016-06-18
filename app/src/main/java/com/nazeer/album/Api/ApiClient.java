@@ -1,8 +1,7 @@
-package com.nazeer.gallery.Api;
+package com.nazeer.album.Api;
 
-import com.nazeer.gallery.Api.models.Flower;
+import com.nazeer.album.Api.models.Flower;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;

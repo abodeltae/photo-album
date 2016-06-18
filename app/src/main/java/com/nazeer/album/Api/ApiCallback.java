@@ -1,4 +1,4 @@
-package com.nazeer.gallery.Api;
+package com.nazeer.album.Api;
 
 /**
  * Created by nazeer on 16/06/16.

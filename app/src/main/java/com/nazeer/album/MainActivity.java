@@ -1,12 +1,10 @@
-package com.nazeer.gallery;
+package com.nazeer.album;
 
 import android.animation.ValueAnimator;
 import android.content.res.Configuration;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -14,18 +12,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.nazeer.gallery.Api.ApiCallback;
-import com.nazeer.gallery.Api.ApiClient;
-import com.nazeer.gallery.Api.models.Flower;
-import com.nazeer.gallery.Util.App;
-import com.nazeer.gallery.Util.Utils;
-import com.nazeer.gallery.adapters.FlowersAdapter;
-import com.nazeer.gallery.callbacks.OnItemClick;
-import com.nazeer.gallery.customViews.MGridLayoutManager;
+import com.nazeer.album.Api.ApiCallback;
+import com.nazeer.album.Api.models.Flower;
+import com.nazeer.album.Util.App;
+import com.nazeer.album.Util.FlowerSearchHelper;
+import com.nazeer.album.Util.Utils;
+import com.nazeer.album.adapters.FlowersAdapter;
+import com.nazeer.album.callbacks.OnItemClick;
+import com.nazeer.album.customViews.MGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,37 +40,42 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RelativeLayout mainContainer;
     private ArrayList<Flower> viewedList;
     private FlowersAdapter adapter;
+    private TextView galleryDetailNameTv,galleryDetailCategoryTv,galleryDetailInstructionsTv;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        setupToolbar();
         fetchData();
 
     }
 
-    private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
 
-    }
+
 
     private void initViews() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         mainContainer=(RelativeLayout)findViewById(R.id.mainContaier);
         recyclerView=(RecyclerView)findViewById(R.id.galleryRV);
         galleryDetailContainer = (RelativeLayout) findViewById(R.id.galleryDetailContainer);
         galleryDetailIv=(ImageView)findViewById(R.id.galleryDetailIv);
+        galleryDetailNameTv=(TextView)findViewById(R.id.flowerNameTv);
+        galleryDetailCategoryTv=(TextView)findViewById(R.id.categoryNameTv);
+        galleryDetailInstructionsTv=(TextView)findViewById(R.id.instructuinsTv);
+        progressBar=(ProgressBar)findViewById(R.id.progressBar);
         galleryDetailContainer.setVisibility(View.INVISIBLE);
 
     }
 
     private void fetchData() {
+        progressBar.setVisibility(View.VISIBLE);
         App.apiClient.getFlowers(new ApiCallback<List<Flower>>() {
             @Override
             public void onSuccess(List<Flower> response) {
+                progressBar.setVisibility(View.INVISIBLE);
                 flowerList=response;
                 viewedList=new ArrayList<Flower>();
                 viewedList.addAll(flowerList);
@@ -79,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
             @Override
             public void onException(Exception e) {
-
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(MainActivity.this,R.string.error,Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -89,8 +95,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         adapter.setOnItemClickListner(new OnItemClick() {
             @Override
             public void onClick(int position) {
-                App.imageLoader.displayImage(adapter.getItem(position).getPhoto(),galleryDetailIv);
-               flipAnimate(true);
+                Flower flower=adapter.getItem(position);
+                showDetail(flower);
+
 
 
             }
@@ -99,6 +106,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+    }
+
+    private void showDetail(Flower flower) {
+        App.imageLoader.displayRoundCornerImage(flower.getPhoto(),galleryDetailIv);
+        galleryDetailNameTv.setText(flower.getName());
+        galleryDetailCategoryTv.setText(flower.getCategory());
+        galleryDetailInstructionsTv.setText(flower.getInstructions());
+        flipAnimate(true);
     }
 
     @Override

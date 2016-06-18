@@ -1,6 +1,6 @@
-package com.nazeer.gallery;
+package com.nazeer.album.Util;
 
-import com.nazeer.gallery.Api.models.Flower;
+import com.nazeer.album.Api.models.Flower;
 
 import java.util.ArrayList;
 import java.util.List;

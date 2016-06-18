@@ -1,9 +1,9 @@
-package com.nazeer.gallery.Util;
+package com.nazeer.album.Util;
 
 import android.app.Application;
 
-import com.nazeer.gallery.Api.ApiClient;
-import com.nazeer.gallery.ImageLoader.MImageLoader;
+import com.nazeer.album.Api.ApiClient;
+import com.nazeer.album.ImageLoader.MImageLoader;
 
 /**
  * Created by nazeer on 16/06/16.

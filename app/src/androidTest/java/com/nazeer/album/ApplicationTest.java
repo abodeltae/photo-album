@@ -1,4 +1,4 @@
-package com.nazeer.gallery;
+package com.nazeer.album;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

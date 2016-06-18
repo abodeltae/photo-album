@@ -1,7 +1,7 @@
-package com.nazeer.gallery.Api.models;
+package com.nazeer.album.Api.models;
 
 import com.google.gson.annotations.SerializedName;
-import com.nazeer.gallery.Api.ApiClient;
+import com.nazeer.album.Api.ApiClient;
 
 /**
  * Created by nazeer on 16/06/16.

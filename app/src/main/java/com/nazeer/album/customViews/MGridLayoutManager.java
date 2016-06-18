@@ -1,10 +1,8 @@
-package com.nazeer.gallery.customViews;
+package com.nazeer.album.customViews;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
-import android.util.TypedValue;
 
 /**
  * Created by nazeer on 6/17/16.

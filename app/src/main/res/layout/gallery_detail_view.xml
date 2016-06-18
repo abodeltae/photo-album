@@ -3,15 +3,87 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/galleryDetailContainer"
+    android:rotationY="180"
     >
-
-    <ImageView
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/galleryDetailIv"
-        android:layout_centerInParent="true"
-        android:rotationY="180"
-        android:scaleType="fitXY"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/galleryDetailIv"
+            android:scaleType="matrix"
+            android:padding="4dp"
+            android:layout_margin="10dp"
 
-        />
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"
+            android:id="@+id/detailsRv"
+            android:layout_below="@+id/galleryDetailIv"
+            >
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:id="@+id/nameLabel"
+                android:text="@string/flowerName"
+                android:textColor="@android:color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:textColor="@android:color/black"
+                android:id="@+id/flowerNameTv"
+                android:layout_toRightOf="@id/nameLabel"
+                />
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:id="@+id/categoryLabel"
+                android:text="@string/categoryName"
+                android:textColor="@android:color/black"
+                android:layout_below="@+id/flowerNameTv"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:id="@+id/categoryNameTv"
+                android:textColor="@android:color/black"
+                android:layout_toRightOf="@id/categoryLabel"
+                android:layout_below="@+id/flowerNameTv"
+                />
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:id="@+id/instructuinsLabel"
+                android:text="@string/instructions"
+                android:textColor="@android:color/black"
+                android:layout_below="@+id/categoryNameTv"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:textColor="@android:color/black"
+                android:id="@+id/instructuinsTv"
+                android:layout_toRightOf="@id/instructuinsLabel"
+                android:layout_below="@+id/categoryNameTv"
+                />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
+
 </RelativeLayout>

@@ -1,20 +1,16 @@
-package com.nazeer.gallery.adapters;
+package com.nazeer.album.adapters;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.nazeer.gallery.Api.models.Flower;
-import com.nazeer.gallery.R;
-import com.nazeer.gallery.Util.App;
-import com.nazeer.gallery.callbacks.OnItemClick;
+import com.nazeer.album.Api.models.Flower;
+import com.nazeer.album.R;
+import com.nazeer.album.Util.App;
+import com.nazeer.album.callbacks.OnItemClick;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,7 +48,7 @@ public class FlowersAdapter extends RecyclerView.Adapter<FlowersAdapter.MViewHol
 
     @Override
     public void onBindViewHolder(FlowersAdapter.MViewHolder holder, int position) {
-        App.imageLoader.displayImage(getItem(position).getPhoto(),holder.flowerIv);
+        App.imageLoader.displayRoundCornerImage(getItem(position).getPhoto(),holder.flowerIv);
         holder.flower=getItem(position);
     }
 

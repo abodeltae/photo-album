@@ -1,4 +1,4 @@
-package com.nazeer.gallery.Util;
+package com.nazeer.album.Util;
 
 import android.content.Context;
 

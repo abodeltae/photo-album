@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Gallery</string>
     <string name="action_search">Search</string>
+    <string name="flowerName">Flower Name</string>
+    <string name="categoryName">Category</string>
+    <string name="instructions">Instructions</string>
+    <string name="error">Error while fetching album from the internet</string>
 </resources>

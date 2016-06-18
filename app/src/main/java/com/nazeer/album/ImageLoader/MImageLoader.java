@@ -1,20 +1,13 @@
-package com.nazeer.gallery.ImageLoader;
+package com.nazeer.album.ImageLoader;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.nazeer.gallery.R;
+import com.nazeer.album.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-
-import okhttp3.internal.Util;
 
 /**
  * Created by nazeer on 6/17/16.
@@ -36,7 +29,7 @@ public class MImageLoader {
                 .showImageOnLoading(R.drawable.loading_img)
                 .showImageOnFail(R.drawable.loading_img)
                 .showImageForEmptyUri(R.drawable.loading_img)
-                .displayer(new RoundedBitmapDisplayer((int) dpToPixel(context, 4)))
+                .displayer(new RoundedBitmapDisplayer(dpToPixel(context, 4)))
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
@@ -51,35 +44,9 @@ public class MImageLoader {
                 .build();
 
     }
-    public void displayImage(String url, final ImageView imageView){
-        imageLoader.loadImage(url, options, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-                imageView.setImageResource(R.drawable.loading_img);
-            }
 
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                imageView.setImageResource(R.drawable.loading_img);
+    public void displayRoundCornerImage(String url, final ImageView imageView){
 
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                int minWidth=dpToPixel(context,100);
-                Bitmap scaled = Bitmap.createScaledBitmap(loadedImage, Math.max(minWidth,imageView.getWidth()), Math.max(minWidth,imageView.getHeight()),false);
-                imageView.setImageBitmap(scaled);
-            }
-
-            @Override
-            public void onLoadingCancelled(String imageUri, View view) {
-                imageView.setImageResource(R.drawable.loading_img);
-            }
-        });
-
-        imageLoader.displayImage(url,imageView,options);
-    }
-    public void displayRoundCornerImage(String url,ImageView imageView){
         imageLoader.displayImage(url,imageView,optionsRoundCornered);
     }
     private int dpToPixel(Context context, int value) {
