@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
              start=180;end=0;
          }
         ValueAnimator animator=ValueAnimator.ofInt(start,end);
-        animator.setDuration(1000);
+        animator.setDuration(600);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
